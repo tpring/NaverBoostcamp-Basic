@@ -1,46 +1,41 @@
+const ladders = {
+    4: 10,
+    8: 22,
+    21: 21,
+    28: 48,
+    50: 17,
+    71: 21,
+    80: 19,
+};
+
+const snakes = {
+    32: -22,
+    36: -30,
+    48: -22,
+    62: -44,
+    88: -64,
+    95: -39,
+    97: -19,
+};
+
 function nextPosition(current, dice) {
-    const next = current + dice;
-    if (next == 4) {
-        return dice + 10;
-    } else if (next == 8) {
-        return dice + 22;
-    } else if (next == 28) {
-        return dice + 48;
-    } else if (next == 21) {
-        return dice + 42;
-    } else if (next == 50) {
-        return dice + 17;
-    } else if (next == 71) {
-        return dice + 92;
-    } else if (next == 80) {
-        return dice + 19;
+    let next = current + dice;
+
+    if (ladders[next] !== undefined) {
+        next += ladders[next];
+    } else if (snakes[next] !== undefined) {
+        next += snakes[next];
     }
 
-    return dice;
+    return next;
 }
 
+const diceRolls = [3, 4, 3, 5, 1];
+
 let start = 1;
-let next = 1;
-let dice = 3;
-next = start + nextPosition(start, dice);
-console.log('from=', start, ', dice=', dice, ', next=', next);
 
-start = next;
-dice = 4;
-next = start + nextPosition(start, dice);
-console.log('from=', start, ', dice=', dice, ', next=', next);
-
-start = next;
-dice = 3;
-next = start + nextPosition(start, dice);
-console.log('from=', start, ', dice=', dice, ', next=', next);
-
-start = next;
-dice = 5;
-next = start + nextPosition(start, dice);
-console.log('from=', start, ', dice=', dice, ', next=', next);
-
-start = next;
-dice = 1;
-next = start + nextPosition(start, dice);
-console.log('from=', start, ', dice=', dice, ', next=', next);
+diceRolls.forEach((dice) => {
+    const next = nextPosition(start, dice);
+    console.log(`from=${start}, dice=${dice}, next=${next}`);
+    start = next;
+});
